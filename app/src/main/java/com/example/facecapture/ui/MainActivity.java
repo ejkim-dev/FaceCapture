@@ -10,11 +10,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.widget.Toast;
+
+import com.example.facecapture.camera.FaceCamera;
+import com.example.facecapture.camera.FaceCameraFactory;
 import com.example.facecapture.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+import java.io.File;
+
+public class MainActivity extends AppCompatActivity implements FaceCamera.onImageSavedListener {
     private ActivityMainBinding binding;
     private ActivityResultLauncher<String> requestPermissionLauncher;
+    private FaceCamera camera;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +64,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializeCamera() {
+        camera = FaceCameraFactory.create();
+        camera.initialize(this);
 
+        camera.startCamera(binding.viewPreview, this);
+
+        binding.viewPreview.setOnClickListener(v -> {
+            camera.takePicture(this);
+        });
+    }
+
+
+    @Override
+    public void onImageSaved(File file) {
+        Toast.makeText(this, "Image saved: " + file.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onError(String message) {
+        Toast.makeText(this, "Image saved error: " + message, Toast.LENGTH_SHORT).show();
     }
 }
