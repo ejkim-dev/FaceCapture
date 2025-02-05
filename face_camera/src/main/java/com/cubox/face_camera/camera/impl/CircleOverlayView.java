@@ -1,4 +1,4 @@
-package com.example.facecapture.ui;
+package com.cubox.face_camera.camera.impl;
 
 import android.content.Context;
 import android.graphics.Bitmap;

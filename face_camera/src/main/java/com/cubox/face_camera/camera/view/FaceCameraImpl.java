@@ -1,5 +1,6 @@
-package com.example.facecapture.camera;
+package com.cubox.face_camera.camera.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -7,6 +8,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
 import androidx.camera.core.CameraSelector;
@@ -18,6 +20,8 @@ import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.cubox.face_camera.camera.FaceCamera;
+import com.cubox.face_camera.camera.impl.CircleOverlayView;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.File;
@@ -27,15 +31,28 @@ import java.io.InputStream;
 import java.util.concurrent.Executor;
 
 
-class FaceCameraImpl implements FaceCamera {
+ public class FaceCameraImpl implements FaceCamera {
     private Context context;
     private PreviewView previewView;
     private Preview preview;
     private ProcessCameraProvider provider;
     private ImageCapture imageCapture;
 
+    public FaceCameraImpl(Activity activity) {
+        FrameLayout rootLayout = activity.findViewById(android.R.id.content);
+        CircleOverlayView circleOverlayView = new CircleOverlayView(activity);
+
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+        );
+        rootLayout.addView(circleOverlayView, params);
+
+        this.context = activity;
+    }
+
     @Override
-    public void initialize(Context context) {
+    public void initialize() {
         ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(context);
         previewView = new PreviewView(context);
         preview = new Preview.Builder().build();
@@ -46,7 +63,6 @@ class FaceCameraImpl implements FaceCamera {
             e.printStackTrace();
         }
         imageCapture = new ImageCapture.Builder().build();
-        this.context = context;
     }
 
     @Override

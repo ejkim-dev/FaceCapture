@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "FaceCapture"
 include(":app")
- 
+include(":face_camera")

@@ -1,4 +1,4 @@
-package com.example.facecapture.camera;
+package com.cubox.face_camera.camera;
 
 import android.content.Context;
 
@@ -8,7 +8,7 @@ import androidx.lifecycle.LifecycleOwner;
 import java.io.File;
 
 public interface FaceCamera {
-    void initialize(Context context);
+    void initialize();
     void startCamera(PreviewView viewPreview, LifecycleOwner lifecycleOwner);
     void takePicture(onImageSavedListener listener);
     PreviewView getPreviewView();
