@@ -57,20 +57,23 @@ public class MainActivity extends AppCompatActivity implements FaceCamera.onImag
         camera.initialize();
 
         camera.startCamera(binding.viewPreview, this);
-
-        binding.viewPreview.setOnClickListener(v -> {
-            camera.takePicture(this);
-        });
+        camera.takePictureWithDelay(this, 3000);
     }
 
 
     @Override
     public void onImageSaved(File file) {
         Toast.makeText(this, "Image saved: " + file.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+//        camera.saveFileToGallery(file, this);
     }
 
     @Override
     public void onError(String message) {
         Toast.makeText(this, "Image saved error: " + message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onImageSavedToGallery(String message) {
+        Toast.makeText(this, "Image saved to gallery: " + message, Toast.LENGTH_SHORT).show();
     }
 }
